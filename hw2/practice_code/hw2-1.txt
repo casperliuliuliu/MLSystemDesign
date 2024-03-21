@@ -1,0 +1,37 @@
+[2024-03-21 17:15:59] build function
+[2024-03-21 17:18:44] test resnet
+model total parameters: 11,689,512
+learning rate=0.005
+[2024-03-21 17:19:02] test resnet18
+model total parameters: 11,689,512
+learning rate=0.005
+[2024-03-21 17:21:33] test SimpleNN
+model total parameters: 109,386
+learning rate=0.005
+[2024-03-21 17:22:02] test SimpleNN
+model total parameters: 109,386
+learning rate=0.005
+Epoch [1/20], phase: train, samples: 60000, Loss: 0.0000, Top-1 Accuracy: 10.79%, Top-3 Accuracy: 29.79%
+[2024-03-21 17:23:12] test SimpleNN
+model total parameters: 109,386
+learning rate=0.005
+Epoch [1/20], phase: train, samples: 60000, Loss: 0.0017, Top-1 Accuracy: 86.85%, Top-3 Accuracy: 96.23%
+Epoch [2/20], phase: train, samples: 60000, Loss: 0.0007, Top-1 Accuracy: 94.56%, Top-3 Accuracy: 99.20%
+Epoch [3/20], phase: train, samples: 60000, Loss: 0.0006, Top-1 Accuracy: 95.63%, Top-3 Accuracy: 99.44%
+Epoch [4/20], phase: train, samples: 60000, Loss: 0.0005, Top-1 Accuracy: 96.34%, Top-3 Accuracy: 99.60%
+Epoch [5/20], phase: train, samples: 60000, Loss: 0.0004, Top-1 Accuracy: 96.84%, Top-3 Accuracy: 99.67%
+[2024-03-21 17:24:57] test SimpleNN
+model total parameters: 109,386
+learning rate=0.005
+Epoch [1/20], phase: train, samples: 60000, Loss: 0.0017, Top-1 Accuracy: 86.47%, Top-3 Accuracy: 96.00%
+Epoch [1/20], phase: test, samples: 10000, Loss: 0.0009, Top-1 Accuracy: 93.02%, Top-3 Accuracy: 99.05%
+Epoch [2/20], phase: train, samples: 60000, Loss: 0.0007, Top-1 Accuracy: 94.18%, Top-3 Accuracy: 99.11%
+Epoch [2/20], phase: test, samples: 10000, Loss: 0.0006, Top-1 Accuracy: 95.15%, Top-3 Accuracy: 99.45%
+Epoch [3/20], phase: train, samples: 60000, Loss: 0.0006, Top-1 Accuracy: 95.53%, Top-3 Accuracy: 99.45%
+Epoch [3/20], phase: test, samples: 10000, Loss: 0.0005, Top-1 Accuracy: 96.24%, Top-3 Accuracy: 99.53%
+Epoch [4/20], phase: train, samples: 60000, Loss: 0.0005, Top-1 Accuracy: 96.42%, Top-3 Accuracy: 99.63%
+Epoch [4/20], phase: test, samples: 10000, Loss: 0.0006, Top-1 Accuracy: 95.94%, Top-3 Accuracy: 99.44%
+Epoch [5/20], phase: train, samples: 60000, Loss: 0.0004, Top-1 Accuracy: 96.60%, Top-3 Accuracy: 99.62%
+Epoch [5/20], phase: test, samples: 10000, Loss: 0.0006, Top-1 Accuracy: 95.55%, Top-3 Accuracy: 99.31%
+Epoch [6/20], phase: train, samples: 60000, Loss: 0.0004, Top-1 Accuracy: 97.05%, Top-3 Accuracy: 99.72%
+Epoch [6/20], phase: test, samples: 10000, Loss: 0.0004, Top-1 Accuracy: 96.72%, Top-3 Accuracy: 99.58%
