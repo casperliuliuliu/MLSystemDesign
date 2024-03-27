@@ -1,0 +1,73 @@
+[2024-03-27 17:20:49] build function
+[2024-03-27 17:21:20] test SimpleNN
+model total parameters: 50,890
+learning rate=0.005
+Epoch [1/20], phase: train, samples: 60000, Loss: 0.0017, Top-1 Accuracy: 87.05%, Top-3 Accuracy: 96.42%
+Epoch [1/20], phase: test, samples: 10000, Loss: 0.0011, Top-1 Accuracy: 91.86%, Top-3 Accuracy: 98.50%
+Epoch [2/20], phase: train, samples: 60000, Loss: 0.0009, Top-1 Accuracy: 93.33%, Top-3 Accuracy: 98.84%
+Epoch [2/20], phase: test, samples: 10000, Loss: 0.0007, Top-1 Accuracy: 94.54%, Top-3 Accuracy: 99.03%
+Epoch [3/20], phase: train, samples: 60000, Loss: 0.0007, Top-1 Accuracy: 94.84%, Top-3 Accuracy: 99.19%
+[2024-03-27 17:26:17] test SimpleNN
+model total parameters: 50,890
+learning rate=0.005
+Epoch [1/20], phase: train, samples: 12000, Loss: 0.0032, Top-1 Accuracy: 74.56%, Top-3 Accuracy: 89.56%
+Epoch [1/20], phase: test, samples: 10000, Loss: 0.0017, Top-1 Accuracy: 88.13%, Top-3 Accuracy: 97.26%
+Epoch [2/20], phase: train, samples: 12000, Loss: 0.0015, Top-1 Accuracy: 88.75%, Top-3 Accuracy: 97.50%
+[2024-03-27 17:26:58] test SimpleNN
+model total parameters: 50,890
+learning rate=0.005
+Epoch [1/20], phase: train, samples: 12000, Loss: 0.0037, Top-1 Accuracy: 71.16%, Top-3 Accuracy: 87.42%
+Epoch [1/20], phase: val, samples: 9600, Loss: 0.0019, Top-1 Accuracy: 86.29%, Top-3 Accuracy: 96.79%
+Epoch [2/20], phase: train, samples: 12000, Loss: 0.0016, Top-1 Accuracy: 87.34%, Top-3 Accuracy: 97.12%
+Epoch [2/20], phase: val, samples: 9600, Loss: 0.0016, Top-1 Accuracy: 88.07%, Top-3 Accuracy: 97.12%
+Epoch [3/20], phase: train, samples: 12000, Loss: 0.0014, Top-1 Accuracy: 89.61%, Top-3 Accuracy: 97.78%
+Epoch [3/20], phase: val, samples: 9600, Loss: 0.0015, Top-1 Accuracy: 89.19%, Top-3 Accuracy: 97.62%
+Epoch [4/20], phase: train, samples: 12000, Loss: 0.0012, Top-1 Accuracy: 90.85%, Top-3 Accuracy: 98.12%
+Epoch [4/20], phase: val, samples: 9600, Loss: 0.0013, Top-1 Accuracy: 90.32%, Top-3 Accuracy: 98.00%
+[2024-03-27 17:27:47] test SimpleNN
+model total parameters: 7,850
+learning rate=0.005
+Epoch [1/20], phase: train, samples: 12000, Loss: 0.0034, Top-1 Accuracy: 72.72%, Top-3 Accuracy: 88.75%
+Epoch [1/20], phase: val, samples: 9600, Loss: 0.0018, Top-1 Accuracy: 86.29%, Top-3 Accuracy: 96.45%
+Epoch [2/20], phase: train, samples: 12000, Loss: 0.0016, Top-1 Accuracy: 88.06%, Top-3 Accuracy: 97.02%
+Epoch [2/20], phase: val, samples: 9600, Loss: 0.0016, Top-1 Accuracy: 88.20%, Top-3 Accuracy: 97.20%
+Epoch [3/20], phase: train, samples: 12000, Loss: 0.0014, Top-1 Accuracy: 89.25%, Top-3 Accuracy: 97.51%
+Epoch [3/20], phase: val, samples: 9600, Loss: 0.0015, Top-1 Accuracy: 88.58%, Top-3 Accuracy: 97.32%
+Epoch [4/20], phase: train, samples: 12000, Loss: 0.0013, Top-1 Accuracy: 89.88%, Top-3 Accuracy: 97.64%
+Epoch [4/20], phase: val, samples: 9600, Loss: 0.0015, Top-1 Accuracy: 89.08%, Top-3 Accuracy: 97.51%
+Epoch [5/20], phase: train, samples: 12000, Loss: 0.0013, Top-1 Accuracy: 90.30%, Top-3 Accuracy: 97.91%
+[2024-03-27 17:28:23] test SimpleNN
+model total parameters: 7,850
+learning rate=0.005
+Epoch [1/20], phase: train, samples: 12000, Loss: 0.0033, Top-1 Accuracy: 74.21%, Top-3 Accuracy: 89.44%
+Epoch [1/20], phase: val, samples: 9600, Loss: 0.0017, Top-1 Accuracy: 87.12%, Top-3 Accuracy: 96.67%
+Epoch [2/20], phase: train, samples: 12000, Loss: 0.0016, Top-1 Accuracy: 88.14%, Top-3 Accuracy: 97.16%
+Epoch [2/20], phase: val, samples: 9600, Loss: 0.0016, Top-1 Accuracy: 88.43%, Top-3 Accuracy: 97.30%
+Epoch [3/20], phase: train, samples: 12000, Loss: 0.0014, Top-1 Accuracy: 89.41%, Top-3 Accuracy: 97.44%
+[2024-03-27 17:32:06] test SimpleNN
+model total parameters: 7,850
+learning rate=0.005
+Epoch [1/20], phase: train, samples: 12000, Loss: 0.0033, Top-1 Accuracy: 74.52%, Top-3 Accuracy: 89.14%
+Epoch [1/20], phase: val, samples: 9600, Loss: 0.0016, Top-1 Accuracy: 88.12%, Top-3 Accuracy: 97.21%
+[2024-03-27 17:36:40] test SimpleNN
+model total parameters: 7,850
+learning rate=0.005
+[2024-03-27 17:37:25] test SimpleNN
+model total parameters: 7,850
+[2024-03-27 17:45:37] test SimpleNN
+model total parameters: 50,890
+[2024-03-27 17:46:03] build function
+[2024-03-27 17:46:05] test SimpleNN
+model total parameters: 50,890
+learning rate=0.005
+Epoch [1/20], phase: train, samples: 12000, Loss: 0.5764, Top-1 Accuracy: 10.39%, Top-3 Accuracy: 30.53%
+Epoch [1/20], phase: val, samples: 9600, Loss: 0.5761, Top-1 Accuracy: 10.14%, Top-3 Accuracy: 29.85%
+[2024-03-27 17:46:30] test SimpleNN
+model total parameters: 50,890
+learning rate=0.005
+Epoch [1/20], phase: train, samples: 12000, Loss: 0.1635, Top-1 Accuracy: 79.37%, Top-3 Accuracy: 94.57%
+[2024-03-27 17:47:26] test SimpleNN
+model total parameters: 50,890
+learning rate=0.005
+Epoch [1/20], phase: train, samples: 12000, Loss: 0.1660, Top-1 Accuracy: 79.20%, Top-3 Accuracy: 94.51%
+Epoch [1/20], phase: val, samples: 9600, Loss: 0.1287, Top-1 Accuracy: 85.44%, Top-3 Accuracy: 96.39%

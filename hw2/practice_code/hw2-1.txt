@@ -35,3 +35,5 @@ Epoch [5/20], phase: train, samples: 60000, Loss: 0.0004, Top-1 Accuracy: 96.60%
 Epoch [5/20], phase: test, samples: 10000, Loss: 0.0006, Top-1 Accuracy: 95.55%, Top-3 Accuracy: 99.31%
 Epoch [6/20], phase: train, samples: 60000, Loss: 0.0004, Top-1 Accuracy: 97.05%, Top-3 Accuracy: 99.72%
 Epoch [6/20], phase: test, samples: 10000, Loss: 0.0004, Top-1 Accuracy: 96.72%, Top-3 Accuracy: 99.58%
+[2024-03-27 17:08:38] build function
+[2024-03-27 17:20:36] build function
