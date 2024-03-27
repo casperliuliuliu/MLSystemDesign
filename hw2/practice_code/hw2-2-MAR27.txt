@@ -1093,3 +1093,8 @@ Epoch [11/25], phase: val, samples: 1000, Loss: 0.0305, Top-1 Accuracies: ['96.1
 Epoch [12/25], phase: train, samples: 4000, Loss: 0.0025, Top-1 Accuracies: ['99.38%', '98.92%', '99.60%', '99.98%']
 Epoch [12/25], phase: val, samples: 1000, Loss: 0.0081, Top-1 Accuracies: ['99.00%', '97.00%', '99.30%', '99.70%']
 Epoch [13/25], phase: train, samples: 4000, Loss: 0.0021, Top-1 Accuracies: ['99.70%', '98.80%', '99.80%', '100.00%']
+Epoch [13/25], phase: val, samples: 1000, Loss: 0.0139, Top-1 Accuracies: ['97.20%', '94.20%', '98.00%', '99.80%']
+Epoch [14/25], phase: train, samples: 4000, Loss: 0.0027, Top-1 Accuracies: ['99.75%', '99.12%', '99.22%', '100.00%']
+Epoch [14/25], phase: val, samples: 1000, Loss: 0.0117, Top-1 Accuracies: ['97.90%', '96.70%', '96.80%', '99.60%']
+Epoch [15/25], phase: train, samples: 4000, Loss: 0.0009, Top-1 Accuracies: ['99.60%', '99.90%', '99.88%', '100.00%']
+Epoch [15/25], phase: val, samples: 1000, Loss: 0.0052, Top-1 Accuracies: ['99.10%', '98.40%', '99.60%', '99.90%']
