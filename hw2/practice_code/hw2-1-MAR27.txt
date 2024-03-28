@@ -413,3 +413,58 @@ Epoch [10/10], phase: train, samples: 48000, Loss: 0.0003, Top-1 Accuracy: 99.28
 Epoch [10/10], phase: val, samples: 6000, Loss: 0.0013, Top-1 Accuracy: 98.32%, Top-3 Accuracy: 99.88%
 Epoch [10/10], phase: test, samples: 10000, Loss: 0.0010, Top-1 Accuracy: 98.71%, Top-3 Accuracy: 99.86%
 Elapsed time: 110.56295561790466 seconds
+[2024-03-28 12:53:29] START LAB
+[2024-03-28 12:53:34] test base
+model total parameters: 50,890
+learning rate=0.005
+Epoch [1/1], phase: train, samples: 48000, Loss: 0.0060, Top-1 Accuracy: 88.42%, Top-3 Accuracy: 97.18%
+Elapsed time: 10.953639507293701 seconds
+weight saved as: base.pt
+[2024-03-28 12:53:46] test lab1_lr01
+model total parameters: 50,890
+learning rate=0.001
+Epoch [1/1], phase: train, samples: 48000, Loss: 0.0075, Top-1 Accuracy: 86.40%, Top-3 Accuracy: 96.18%
+Elapsed time: 12.16006588935852 seconds
+weight saved as: lab1_lr01.pt
+[2024-03-28 12:53:58] test lab1_lr25
+model total parameters: 50,890
+learning rate=0.025
+Epoch [1/1], phase: train, samples: 48000, Loss: 0.0125, Top-1 Accuracy: 75.68%, Top-3 Accuracy: 92.19%
+Elapsed time: 11.829688310623169 seconds
+weight saved as: lab1_lr25.pt
+[2024-03-28 12:54:10] test lab2_BS0004
+model total parameters: 50,890
+learning rate=0.005
+Epoch [1/1], phase: train, samples: 48000, Loss: 0.1333, Top-1 Accuracy: 84.02%, Top-3 Accuracy: 96.02%
+Elapsed time: 32.894978761672974 seconds
+weight saved as: lab2_BS0004.pt
+[2024-03-28 12:54:43] test lab2_BS1024
+model total parameters: 50,890
+learning rate=0.005
+Epoch [1/1], phase: train, samples: 48000, Loss: 0.0009, Top-1 Accuracy: 73.88%, Top-3 Accuracy: 89.26%
+Elapsed time: 9.189153909683228 seconds
+weight saved as: lab2_BS1024.pt
+[2024-03-28 12:54:52] test lab3_softmax
+model total parameters: 50,890
+learning rate=0.005
+Epoch [1/1], phase: train, samples: 48000, Loss: 0.0197, Top-1 Accuracy: 56.15%, Top-3 Accuracy: 92.13%
+Elapsed time: 11.909446477890015 seconds
+weight saved as: lab3_softmax.pt
+[2024-03-28 12:55:04] test lab3_sigmoid
+model total parameters: 50,890
+learning rate=0.005
+Epoch [1/1], phase: train, samples: 48000, Loss: 0.0064, Top-1 Accuracy: 88.60%, Top-3 Accuracy: 96.98%
+Elapsed time: 12.079464673995972 seconds
+weight saved as: lab3_sigmoid.pt
+[2024-03-28 12:55:16] test lab4_SGD
+model total parameters: 50,890
+learning rate=0.005
+Epoch [1/1], phase: train, samples: 48000, Loss: 0.0179, Top-1 Accuracy: 73.47%, Top-3 Accuracy: 90.65%
+Elapsed time: 12.000512838363647 seconds
+weight saved as: lab4_SGD.pt
+[2024-03-28 12:55:28] test lab5_cnn
+model total parameters: 220,234
+learning rate=0.005
+Epoch [1/1], phase: train, samples: 48000, Loss: 0.0025, Top-1 Accuracy: 95.01%, Top-3 Accuracy: 98.72%
+Elapsed time: 16.01808524131775 seconds
+weight saved as: lab5_cnn.pt
