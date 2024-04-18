@@ -49,7 +49,7 @@ def get_dataloaders(dataset, train_ratio, val_ratio, batch_size):
     return dataloaders
 
 def pprint(output = '\n', show_time = False): # print and fprint at the same time
-    filename = "hw3-MAR29.txt"
+    filename = "hw3-APR18.txt"
     print(output)
     with open(filename, 'a') as f:
         if show_time:
@@ -68,8 +68,16 @@ def count_parameters(model):
     return total_num
 
 
-def train(model_lists, model_name, loaders, phases=['train'], save_weight=False):
+def train(model_lists, model_name, loaders, num_class, phases=['train'], epochs=20, save_weight=False):
     model = model_lists[model_name]()
+    if model_name == "resnet18":
+        num_ftrs = model.fc.in_features
+        model.fc = torch.nn.Linear(num_ftrs, num_class)
+        
+    elif model_name == "mobileNet_v2":
+        num_ftrs = model.classifier[1].in_features
+        model.classifier[1] = torch.nn.Linear(num_ftrs, num_class)
+
     pprint(f"test {model_name}", True)
     model_parameters_amount = count_parameters(model)
     pprint(f"model total parameters: {model_parameters_amount:,}")
@@ -81,7 +89,6 @@ def train(model_lists, model_name, loaders, phases=['train'], save_weight=False)
     optimizer = optim.Adam(model.parameters(), lr=lr)
     pprint(f"learning rate={lr}")
     iteration = 0
-    epochs = 20
     start = time.time()
     for epoch in range(epochs):
         for phase in phases:
@@ -125,6 +132,7 @@ def train(model_lists, model_name, loaders, phases=['train'], save_weight=False)
     duration = end - start
     pprint(f"Elapsed time: {duration} seconds")
     if save_weight:
+        model.cpu()
         model_scripted = torch.jit.script(model) # Export to TorchScript
         model_scripted.save(f'{model_name}.pt') # Save
         pprint(f"weight saved as: {model_name}.pt")   

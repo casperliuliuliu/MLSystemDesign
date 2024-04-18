@@ -9,5 +9,5 @@ def count_files_in_directory(directory):
         
     return file_count
 
-folder_path = 'D:\\Casper\\OTHER\\Data\\dpaml_hw3\\dataset\\tzu_photo'  # Replace with your folder path
+folder_path = 'D:\\Casper\\OTHER\\Data\\dpaml_hw3\\dataset\\empty_photo'  # Replace with your folder path
 print("Number of files in directory:", count_files_in_directory(folder_path))

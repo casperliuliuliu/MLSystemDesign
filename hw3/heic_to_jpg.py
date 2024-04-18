@@ -17,10 +17,11 @@ def convert_to_jpg(input_file, output_file):
 def main():
     # script_directory = os.path.dirname(os.path.abspath(__file__))
     # input_directory = os.path.join(script_directory, "image")
-    input_directory = "D:\\Casper\\OTHER\\Data\\dpaml_hw3\\jpg_dataset"
+    input_directory = "D:\\Casper\\OTHER\\Data\\dpaml_hw3\\face_data\\empty_photo"
     for root, _, files in os.walk(input_directory):
         for file in files:
             # print(root)
+            print(file)
             file_ext = os.path.splitext(file.lower())[1]
             if file_ext == '.heic':
                 input_file = os.path.join(root, file)
