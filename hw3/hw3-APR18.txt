@@ -670,6 +670,7 @@ Epoch [25/25], phase: train, samples: 992, Loss: 0.0368, Top-1 Accuracy: 94.66%,
 Epoch [25/25], phase: val, samples: 248, Loss: 0.2424, Top-1 Accuracy: 78.23%, Top-3 Accuracy: 98.39%
 Elapsed time: 1436.0621979236603 seconds
 weight saved as: resnet18.pt
+
 [2024-04-18 11:52:55] test mobileNet_v2
 model total parameters: 2,228,996
 learning rate=0.005
@@ -781,6 +782,7 @@ Epoch [25/25], phase: train, samples: 992, Loss: 0.1489, Top-1 Accuracy: 74.40%,
 Epoch [25/25], phase: val, samples: 248, Loss: 0.1779, Top-1 Accuracy: 74.60%, Top-3 Accuracy: 95.97%
 Elapsed time: 1321.5594866275787 seconds
 weight saved as: mod_face_a.pt
+
 [2024-04-18 13:19:54] test mod_face_b
 model total parameters: 5,208
 learning rate=0.005
@@ -836,6 +838,7 @@ Epoch [25/25], phase: train, samples: 992, Loss: 0.1746, Top-1 Accuracy: 71.27%,
 Epoch [25/25], phase: val, samples: 248, Loss: 0.2128, Top-1 Accuracy: 72.58%, Top-3 Accuracy: 95.16%
 Elapsed time: 1254.5631546974182 seconds
 weight saved as: mod_face_b.pt
+
 [2024-04-18 13:40:49] test SimpleCNN_a
 model total parameters: 19,049
 learning rate=0.005
