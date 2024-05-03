@@ -68,13 +68,13 @@ def hand_pos(finger_angle):
     else:
         return ''
 
-cap = cv2.VideoCapture(0)            # 讀取攝影機
+cap = cv2.VideoCapture(1)            # 讀取攝影機
 fontFace = cv2.FONT_HERSHEY_SIMPLEX  # 印出文字的字型
 lineType = cv2.LINE_AA               # 印出文字的邊框
 
 # mediapipe 啟用偵測手掌
 with mp_hands.Hands(
-    model_complexity=0,
+    model_complexity=1,
     min_detection_confidence=0.5,
     min_tracking_confidence=0.5) as hands:
 
@@ -105,6 +105,7 @@ with mp_hands.Hands(
                     # 將 21 個節點換算成座標，記錄到 finger_points
                     x = i.x*w
                     y = i.y*h
+                    print(i)
                     finger_points.append((x,y))
                 if finger_points:
                     finger_angle = hand_angle(finger_points) # 計算手指角度，回傳長度為 5 的串列
