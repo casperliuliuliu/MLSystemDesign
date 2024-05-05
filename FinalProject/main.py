@@ -62,6 +62,46 @@ def check_open_palm(landmarks, height):
     print(f"Distances: Thumb-Index = {dist_thumb_index/ palm_width}, \nThumb-Pinky = {dist_thumb_pinky/ palm_width}, \npalm_width = {palm_width}")
     return open_hand
 
+def check_finger_up(hand_landmarks, width, height):
+    fingers_up = []
+    # Finger angle threshold to determine if a finger is up
+    angle_threshold = 160
+    # List of finger landmark triplets (MCP, PIP, DIP) for each finger
+    finger_joints = [
+        # (mp.solutions.hands.HandLandmark.THUMB_MCP, mp.solutions.hands.HandLandmark.THUMB_IP, mp.solutions.hands.HandLandmark.THUMB_TIP),
+        (mp.solutions.hands.HandLandmark.INDEX_FINGER_MCP, mp.solutions.hands.HandLandmark.INDEX_FINGER_PIP, mp.solutions.hands.HandLandmark.INDEX_FINGER_DIP),
+        (mp.solutions.hands.HandLandmark.MIDDLE_FINGER_MCP, mp.solutions.hands.HandLandmark.MIDDLE_FINGER_PIP, mp.solutions.hands.HandLandmark.MIDDLE_FINGER_DIP),
+        (mp.solutions.hands.HandLandmark.RING_FINGER_MCP, mp.solutions.hands.HandLandmark.RING_FINGER_PIP, mp.solutions.hands.HandLandmark.RING_FINGER_DIP),
+        (mp.solutions.hands.HandLandmark.PINKY_MCP, mp.solutions.hands.HandLandmark.PINKY_PIP, mp.solutions.hands.HandLandmark.PINKY_DIP)
+    ]
+    thumb_tip = hand_landmarks.landmark[mp_hands.HandLandmark.THUMB_TIP]
+    pinky_tip = hand_landmarks.landmark[mp_hands.HandLandmark.PINKY_TIP]
+
+    palm_width = calculate_palm_width(hand_landmarks, height)
+    # Calculate distances between the tips of the thumb, index, and pinky fingers
+    dist_thumb_pinky = np.sqrt((thumb_tip.x - pinky_tip.x)**2 + (thumb_tip.y - pinky_tip.y)**2) / palm_width
+    # print('thumb pinky', dist_thumb_pinky)
+    if dist_thumb_pinky > 0.001:
+        fingers_up.append(True)
+    else:
+        fingers_up.append(False)
+
+    for mcp_joint, pip_joint, dip_joint in finger_joints:
+        mcp = [hand_landmarks.landmark[mcp_joint].x * width, hand_landmarks.landmark[mcp_joint].y * height]
+        pip = [hand_landmarks.landmark[pip_joint].x * width, hand_landmarks.landmark[pip_joint].y * height]
+        dip = [hand_landmarks.landmark[dip_joint].x * width, hand_landmarks.landmark[dip_joint].y * height]
+
+        # Calculate the angle of the finger
+        angle = calculate_angle(mcp, pip, dip)
+
+        # Check if the finger is up
+        if angle > angle_threshold:
+            fingers_up.append(True)
+        else:
+            fingers_up.append(False)
+
+    return fingers_up
+
 with mp_hands.Hands(
     model_complexity=1,
     min_detection_confidence=0.5,
@@ -110,32 +150,25 @@ with mp_hands.Hands(
                     print("here")
                     palm_open_time = None
 
-                    mcp = [hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_MCP].x * w,
-                        hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_MCP].y * h]
-                    pip = [hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_PIP].x * w,
-                        hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_PIP].y * h]
-                    dip = [hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_DIP].x * w,
-                        hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_DIP].y * h]
-                    tip = [hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP].x * w,
-                        hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP].y * h]
-                    tip_depth = hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP].z  # Depth of the fingertip
-                    # Calculate dynamic thickness based on the depth
-                    thickness = calculate_line_thickness(5, tip_depth)
-                    finger_angle = calculate_angle(mcp, pip, dip)
+                    finger_state = check_finger_up(hand_landmarks, w, h)
+                    print(finger_state)
+                    # tip_depth = hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP].z  # Depth of the fingertip
+                    # # Calculate dynamic thickness based on the depth
+                    # thickness = calculate_line_thickness(5, tip_depth)
 
-                    if finger_angle > 160:  # Threshold for finger to be considered as "straight"
-                        current_point = (int(tip[0]), int(tip[1]))
-                        drawing = True
-                    else:
-                        drawing = False
+                    # if finger_angle > 160:  # Threshold for finger to be considered as "straight"
+                    #     current_point = (int(tip[0]), int(tip[1]))
+                    #     drawing = True
+                    # else:
+                    #     drawing = False
 
-                    if palm_open_time is None:  # Only draw if palm is not open
-                        if drawing and last_point is not None:
-                            cv2.line(draw, last_point, current_point, (0, 255, 0, 255), thickness)
-                    # if drawing and last_point is not None:
-                    #     cv2.line(draw, last_point, current_point, (0, 255, 0, 255), 2)  # Green color
+                    # if palm_open_time is None:  # Only draw if palm is not open
+                    #     if drawing and last_point is not None:
+                    #         cv2.line(draw, last_point, current_point, (0, 255, 0, 255), thickness)
+                    # # if drawing and last_point is not None:
+                    # #     cv2.line(draw, last_point, current_point, (0, 255, 0, 255), 2)  # Green color
 
-                        last_point = current_point if drawing else None
+                    #     last_point = current_point if drawing else None
         else:
             # If no hands are detected, reset last_point
             palm_open_time = None
