@@ -75,13 +75,20 @@ def check_finger_up(hand_landmarks, width, height):
         (mp.solutions.hands.HandLandmark.PINKY_MCP, mp.solutions.hands.HandLandmark.PINKY_PIP, mp.solutions.hands.HandLandmark.PINKY_DIP)
     ]
     thumb_tip = hand_landmarks.landmark[mp_hands.HandLandmark.THUMB_TIP]
-    pinky_tip = hand_landmarks.landmark[mp_hands.HandLandmark.PINKY_TIP]
-
+    # pinky_tip = hand_landmarks.landmark[mp_hands.HandLandmark.PINKY_TIP]
     palm_width = calculate_palm_width(hand_landmarks, height)
-    # Calculate distances between the tips of the thumb, index, and pinky fingers
-    dist_thumb_pinky = np.sqrt((thumb_tip.x - pinky_tip.x)**2 + (thumb_tip.y - pinky_tip.y)**2) / palm_width
-    # print('thumb pinky', dist_thumb_pinky)
-    if dist_thumb_pinky > 0.001:
+    # # Calculate distances between the tips of the thumb, index, and pinky fingers
+    dist_thumb_index_mcp = np.sqrt((thumb_tip.x - hand_landmarks.landmark[finger_joints[0][0]].x)**2 + (thumb_tip.y - hand_landmarks.landmark[finger_joints[0][0]].y)**2) / palm_width
+    # # print('thumb pinky', dist_thumb_pinky)
+    # thumb_tip = hand_landmarks.landmark[mp.solutions.hands.HandLandmark.THUMB_TIP]
+    # wrist = hand_landmarks.landmark[mp.solutions.hands.HandLandmark.WRIST]
+
+    # palm_width = calculate_palm_width(hand_landmarks, height)
+    # # Calculate distance between the thumb tip and the wrist
+    # dist_thumb_wrist = np.sqrt((thumb_tip.x - wrist.x) ** 2 + (thumb_tip.y - wrist.y) ** 2) / palm_width
+    print('Thumb to Wrist Distance:', dist_thumb_index_mcp)
+
+    if dist_thumb_index_mcp > 0.0005:
         fingers_up.append(True)
     else:
         fingers_up.append(False)
