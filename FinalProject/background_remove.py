@@ -26,7 +26,7 @@ while cap.isOpened():
 
     # 获取分割掩码
     mask = results.segmentation_mask
-    condition = mask > 0.5
+    condition = mask > 0.6
 
     # 创建白色背景
     bg_frame = np.ones_like(frame, dtype=np.uint8) * 255
