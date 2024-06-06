@@ -40,7 +40,7 @@ def process_frame(frame):
     output_predictions = output.argmax(0)
     
     # Create a mask for the foreground (assuming class '15' is the target class)
-    mask = output_predictions == 13
+    mask = output_predictions == 15
     frame = cv2.resize(frame, (640, 480), interpolation=cv2.INTER_AREA)
     
     # Apply mask to frame
