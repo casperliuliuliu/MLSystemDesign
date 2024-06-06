@@ -68,7 +68,7 @@ def hand_pos(finger_angle):
     else:
         return ''
 
-cap = cv2.VideoCapture(1)            # 讀取攝影機
+cap = cv2.VideoCapture(0)            # 讀取攝影機
 fontFace = cv2.FONT_HERSHEY_SIMPLEX  # 印出文字的字型
 lineType = cv2.LINE_AA               # 印出文字的邊框
 

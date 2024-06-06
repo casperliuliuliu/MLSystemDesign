@@ -1,8 +1,19 @@
 import cv2
+import os
 import mediapipe as mp
 import numpy as np
 import time
+import matplotlib.pyplot as plt
+from finger_detection import check_finger_up
+from finger_detection import calculate_palm_width
+from color_palette import draw_palette, check_palette_touch, draw_text
+from background_remove import remove_background, change_background
 mp_hands = mp.solutions.hands
+
+def save_frame_with_timestamp(frame, prefix='DPAML_'):
+    timestamp = time.strftime("%Y%m%d-%H%M%S")
+    filename = f"{prefix}{timestamp}.png"
+    cv2.imwrite(filename, frame)
 
 def calculate_line_thickness(base_thickness, z_coordinate, scale_factor=50):
     """ Calculate line thickness based on depth information.
@@ -24,27 +35,6 @@ def find_line_close_to_pinch(lines, pinch_pos, threshold=10):
             return line
     return None
 
-def calculate_angle(a, b, c):
-    a = np.array(a)  # First
-    b = np.array(b)  # Mid
-    c = np.array(c)  # End
-
-    radians = np.arctan2(c[1] - b[1], c[0] - b[0]) - np.arctan2(a[1] - b[1], a[0] - b[0])
-    angle = np.abs(radians * 180.0 / np.pi)
-
-    if angle > 180.0:
-        angle = 360 - angle
-
-    return angle
-
-def calculate_palm_width(landmarks, height):
-    # Using the wrist and the middle finger MCP (metacarpophalangeal joint) to estimate palm width
-    wrist = landmarks.landmark[mp_hands.HandLandmark.WRIST]
-    middle_mcp = landmarks.landmark[mp_hands.HandLandmark.MIDDLE_FINGER_MCP]
-
-    # Calculate the distance between these points as the palm width
-    palm_width = np.sqrt((wrist.x - middle_mcp.x)**2 + (wrist.y - middle_mcp.y)**2) * height  # height is used to scale the width appropriately
-    return palm_width
 
 def check_open_palm(landmarks, height):
     palm_width = calculate_palm_width(landmarks, height)
@@ -59,141 +49,170 @@ def check_open_palm(landmarks, height):
 
     # Check if both distances are above a threshold that indicates an open hand
     open_hand = dist_thumb_index > 0.0013 and dist_thumb_pinky > 0.0015
-    print(f"Distances: Thumb-Index = {dist_thumb_index/ palm_width}, \nThumb-Pinky = {dist_thumb_pinky/ palm_width}, \npalm_width = {palm_width}")
+    # print(f"Distances: Thumb-Index = {dist_thumb_index/ palm_width}, \nThumb-Pinky = {dist_thumb_pinky/ palm_width}, \npalm_width = {palm_width}")
     return open_hand
 
-def check_finger_up(hand_landmarks, width, height):
-    fingers_up = []
-    # Finger angle threshold to determine if a finger is up
-    angle_threshold = 160
-    # List of finger landmark triplets (MCP, PIP, DIP) for each finger
-    finger_joints = [
-        # (mp.solutions.hands.HandLandmark.THUMB_MCP, mp.solutions.hands.HandLandmark.THUMB_IP, mp.solutions.hands.HandLandmark.THUMB_TIP),
-        (mp.solutions.hands.HandLandmark.INDEX_FINGER_MCP, mp.solutions.hands.HandLandmark.INDEX_FINGER_PIP, mp.solutions.hands.HandLandmark.INDEX_FINGER_DIP),
-        (mp.solutions.hands.HandLandmark.MIDDLE_FINGER_MCP, mp.solutions.hands.HandLandmark.MIDDLE_FINGER_PIP, mp.solutions.hands.HandLandmark.MIDDLE_FINGER_DIP),
-        (mp.solutions.hands.HandLandmark.RING_FINGER_MCP, mp.solutions.hands.HandLandmark.RING_FINGER_PIP, mp.solutions.hands.HandLandmark.RING_FINGER_DIP),
-        (mp.solutions.hands.HandLandmark.PINKY_MCP, mp.solutions.hands.HandLandmark.PINKY_PIP, mp.solutions.hands.HandLandmark.PINKY_DIP)
-    ]
-    thumb_tip = hand_landmarks.landmark[mp_hands.HandLandmark.THUMB_TIP]
-    # pinky_tip = hand_landmarks.landmark[mp_hands.HandLandmark.PINKY_TIP]
-    palm_width = calculate_palm_width(hand_landmarks, height)
-    # # Calculate distances between the tips of the thumb, index, and pinky fingers
-    dist_thumb_index_mcp = np.sqrt((thumb_tip.x - hand_landmarks.landmark[finger_joints[0][0]].x)**2 + (thumb_tip.y - hand_landmarks.landmark[finger_joints[0][0]].y)**2) / palm_width
-    # # print('thumb pinky', dist_thumb_pinky)
-    # thumb_tip = hand_landmarks.landmark[mp.solutions.hands.HandLandmark.THUMB_TIP]
-    # wrist = hand_landmarks.landmark[mp.solutions.hands.HandLandmark.WRIST]
+def list_images_in_folder(folder_path):
+    image_extensions = {'.jpg', '.jpeg', '.png', '.bmp', '.gif', '.tiff', '.webp'}
+    image_files = []
+    for filename in os.listdir(folder_path):
+        ext = os.path.splitext(filename)[1].lower()
+        if ext in image_extensions:
+            image_files.append(filename)
+    return image_files
 
-    # palm_width = calculate_palm_width(hand_landmarks, height)
-    # # Calculate distance between the thumb tip and the wrist
-    # dist_thumb_wrist = np.sqrt((thumb_tip.x - wrist.x) ** 2 + (thumb_tip.y - wrist.y) ** 2) / palm_width
-    print('Thumb to Wrist Distance:', dist_thumb_index_mcp)
+def main():
+    background_folder_path = "/Users/liushiwen/Desktop/大四下/群體智慧/SwarmIntelligence/midterm_report/function_sim/"
+    pinch_time = 0
+    background_index = 0
+    palm_open_duration = 1
+    pinch_time = 2
+    yeah_time = 0
+    background_list = list_images_in_folder(background_folder_path)
+    print(background_list)
+    background_img = cv2.imread(background_folder_path + background_list[background_index])
+    background_img = cv2.cvtColor(background_img, cv2.COLOR_BGR2RGB)
+    current_color = (0, 200, 0, 200)  # Initial drawing color
+    is_pinching_displayed = False
+    is_palm_opened = False
+    is_yeah_displayed = False
+    save_flag = False
+    with mp_hands.Hands(
+        model_complexity=0,
+        min_detection_confidence=0.5,
+        min_tracking_confidence=0.5) as hands:
 
-    if dist_thumb_index_mcp > 0.0005:
-        fingers_up.append(True)
-    else:
-        fingers_up.append(False)
+        cap = cv2.VideoCapture(0)  # Open the default camera
 
-    for mcp_joint, pip_joint, dip_joint in finger_joints:
-        mcp = [hand_landmarks.landmark[mcp_joint].x * width, hand_landmarks.landmark[mcp_joint].y * height]
-        pip = [hand_landmarks.landmark[pip_joint].x * width, hand_landmarks.landmark[pip_joint].y * height]
-        dip = [hand_landmarks.landmark[dip_joint].x * width, hand_landmarks.landmark[dip_joint].y * height]
+        if not cap.isOpened():
+            print("Cannot open camera")
+            exit()
 
-        # Calculate the angle of the finger
-        angle = calculate_angle(mcp, pip, dip)
-
-        # Check if the finger is up
-        if angle > angle_threshold:
-            fingers_up.append(True)
-        else:
-            fingers_up.append(False)
-
-    return fingers_up
-
-with mp_hands.Hands(
-    model_complexity=1,
-    min_detection_confidence=0.5,
-    min_tracking_confidence=0.5) as hands:
-
-    cap = cv2.VideoCapture(0)  # Open the default camera
-
-    if not cap.isOpened():
-        print("Cannot open camera")
-        exit()
-
-    ret, test_img = cap.read()
-    if not ret:
-        print("Failed to grab frame from camera.")
-        cap.release()
-        exit()
-    
-    h, w = test_img.shape[:2]
-    draw = np.zeros((h, w, 4), dtype='uint8')  # Ensure this matches the camera frame's height and width
-    last_point = None
-    drawing = False  # Control drawing state
-    palm_open_duration = 2
-    palm_open_time = None
-    while True:
-        ret, img = cap.read()
+        ret, test_img = cap.read()
         if not ret:
-            print("Cannot receive frame")
-            break
+            print("Failed to grab frame from camera.")
+            cap.release()
+            exit()
+        
+        h, w = test_img.shape[:2]
+        draw = np.zeros((h, w, 4), dtype='uint8')  # Ensure this matches the camera frame's height and width
+        last_point = None
+        palm_open_time = None
+        while True:
+            ret, img = cap.read()
+            if not ret:
+                print("Cannot receive frame")
+                break
 
-        img = cv2.flip(img, 1)
-        img_rgba = cv2.cvtColor(img, cv2.COLOR_BGR2BGRA)  # Convert frame to BGRA
-        img2 = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # Process image in RGB
+            img = cv2.flip(img, 1)
+            img2 = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # Process image in RGB
 
-        # Process the image and detect hands
-        results = hands.process(img2)
+            # Process the image and detect hands
+            results = hands.process(img2)
 
-        # Check if any hand landmarks were detected
-        if results.multi_hand_landmarks:
-            for hand_landmarks in results.multi_hand_landmarks:
-                if check_open_palm(hand_landmarks, h):
-                    if palm_open_time is None:
-                        palm_open_time = time.time()
-                    elif time.time() - palm_open_time >= palm_open_duration:
-                        draw = np.zeros((h, w, 4), dtype='uint8')  # Clear drawing
+            # Check if any hand landmarks were detected
+            if results.multi_hand_landmarks:
+                for hand_landmarks in results.multi_hand_landmarks:
+                    is_palm_opened = check_open_palm(hand_landmarks, h)
+                    if is_palm_opened:
+                        cv2.putText(background_img, '', (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
+                        if palm_open_time is None:
+                            palm_open_time = time.time()
+                        elif time.time() - palm_open_time >= palm_open_duration:
+                            draw = np.zeros((h, w, 4), dtype='uint8')  # Clear drawing
+                    else:
+                        palm_open_time = None
+                        finger_state = check_finger_up(hand_landmarks, w, h)
+                        # print(finger_state)
+                        if finger_state[1] and finger_state[1:] == [True, False, False, False]:
+                            current_point = (int(hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP].x * w),
+                                                int(hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP].y * h))
+                            selected_color = check_palette_touch(palette_centers, palette_colors, current_point)
+                            if selected_color:
+                                current_color = selected_color + (255,)  # Add alpha channel for drawing
+
+                            if last_point is not None:
+                                cv2.line(draw, last_point, current_point, current_color, thickness=4)
+                            last_point = current_point
+                            pinch_time = 0
+
+                        else:
+                            last_point = None
+                    
+                    
+                    if finger_state == [False, True, True, False, False]: 
+                        yeah_time += 1
+                        is_yeah_displayed = True
+                    else:
+                        save_flag = False
+                        yeah_time = 0
+                        is_yeah_displayed = False
+
+                    if yeah_time > 10:
+                        save_flag = True
+
+
+                    if finger_state == [False, False, True, True, True]: 
+                        pinch_time += 1
+                        is_pinching_displayed = True
+                    else:
+                        pinch_time = 0
+                        is_pinching_displayed = False
+                        
+                    if pinch_time > 10:
+                        background_index +=1
+                        if background_index >= len(background_list):
+                            background_index %= len(background_list)
+                        pinch_time = 0
+                        draw = np.zeros((h, w, 4), dtype='uint8')
+                        background_img = cv2.imread(background_folder_path + background_list[background_index])
+                        background_img = cv2.cvtColor(background_img, cv2.COLOR_BGR2RGB)
+                    
+            else:
+                palm_open_time = None
+                last_point = None
+
+            # img = remove_background(img)
+            img = change_background(img, background_img) 
+            palette_centers, palette_colors = draw_palette(img)
+            
+            for j in range(w):
+                img[:,j,0] = img[:,j,0]*(1-draw[:,j,3]/255) + draw[:,j,0]*(draw[:,j,3]/255)
+                img[:,j,1] = img[:,j,1]*(1-draw[:,j,3]/255) + draw[:,j,1]*(draw[:,j,3]/255)
+                img[:,j,2] = img[:,j,2]*(1-draw[:,j,3]/255) + draw[:,j,2]*(draw[:,j,3]/255)
+            # Overlay the drawing canvas on the video frame
+            # img = cv2.addWeighted(img, 1, draw, 0.8, 0)
+            if is_yeah_displayed:
+                if save_flag:
+                    save_frame_with_timestamp(img)
+                    draw_text(img, 'IMG_saved!', (100, 50))
+                    save_flag = False
+                    is_yeah_displayed = False
                 else:
-                    print("here")
-                    palm_open_time = None
-
-                    finger_state = check_finger_up(hand_landmarks, w, h)
-                    print(finger_state)
-                    # tip_depth = hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP].z  # Depth of the fingertip
-                    # # Calculate dynamic thickness based on the depth
-                    # thickness = calculate_line_thickness(5, tip_depth)
-
-                    # if finger_angle > 160:  # Threshold for finger to be considered as "straight"
-                    #     current_point = (int(tip[0]), int(tip[1]))
-                    #     drawing = True
-                    # else:
-                    #     drawing = False
-
-                    # if palm_open_time is None:  # Only draw if palm is not open
-                    #     if drawing and last_point is not None:
-                    #         cv2.line(draw, last_point, current_point, (0, 255, 0, 255), thickness)
-                    # # if drawing and last_point is not None:
-                    # #     cv2.line(draw, last_point, current_point, (0, 255, 0, 255), 2)  # Green color
-
-                    #     last_point = current_point if drawing else None
-        else:
-            # If no hands are detected, reset last_point
-            palm_open_time = None
-            last_point = None
-            drawing = False
+                    draw_text(img, 'Yeah!', (100, 50))
+            elif is_pinching_displayed:
+                draw_text(img, 'Pinching!', (100, 50))
+            elif is_palm_opened:
+                draw_text(img, 'PALM OPENED!', (100, 50))
+                
 
 
-        for j in range(w):
-            img[:,j,0] = img[:,j,0]*(1-draw[:,j,3]/255) + draw[:,j,0]*(draw[:,j,3]/255)
-            img[:,j,1] = img[:,j,1]*(1-draw[:,j,3]/255) + draw[:,j,1]*(draw[:,j,3]/255)
-            img[:,j,2] = img[:,j,2]*(1-draw[:,j,3]/255) + draw[:,j,2]*(draw[:,j,3]/255)
-        # Overlay the drawing canvas on the video frame
-        # img = cv2.addWeighted(img, 1, draw, 0.8, 0)
+            cv2.imshow('Finger Drawing', img)
+            key = cv2.waitKey(1) & 0xFF
+            if key == ord('q'):
+                break
 
-        cv2.imshow('Finger Drawing', img)
-        key = cv2.waitKey(1) & 0xFF
-        if key == ord('q'):
-            break
+        cap.release()
+        cv2.destroyAllWindows()
 
-    cap.release()
-    cv2.destroyAllWindows()
+def plot_img(img):
+    # Plot the image using matplotlib
+    plt.imshow(img)
+    plt.title('Background Image')
+    plt.axis('off')  # Hide the axis
+    plt.show()
+
+if __name__ == "__main__":
+    main()
+
+
