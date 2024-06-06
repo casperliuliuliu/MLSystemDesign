@@ -62,7 +62,7 @@ def list_images_in_folder(folder_path):
     return image_files
 
 def main():
-    background_folder_path = "/Users/liushiwen/Desktop/大四下/群體智慧/SwarmIntelligence/midterm_report/function_sim/"
+    background_folder_path = "./data/function_sim/"
     pinch_time = 0
     background_index = 0
     palm_open_duration = 1
