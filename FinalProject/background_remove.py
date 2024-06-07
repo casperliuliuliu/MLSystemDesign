@@ -5,15 +5,19 @@ import numpy as np
 mp_selfie_segmentation = mp.solutions.selfie_segmentation
 selfie_segmentation = mp_selfie_segmentation.SelfieSegmentation(model_selection=0)
 
-def change_background(frame, img):
+def change_background(frame, img, flag = True):
     rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-    results = selfie_segmentation.process(rgb_frame)
-    mask = results.segmentation_mask
-    condition = mask > 0.6
     h, w = frame.shape[:2]
     resized_img = cv2.resize(img, (w, h))
-    output_frame = np.where(condition[:, :, None], frame, resized_img)
-    return output_frame
+    if flag:
+        results = selfie_segmentation.process(rgb_frame)
+        mask = results.segmentation_mask
+        condition = mask > 0.6
+        
+        output_frame = np.where(condition[:, :, None], frame, resized_img)
+        return output_frame
+    else:
+        return resized_img
 
 def remove_background(frame):
     rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
