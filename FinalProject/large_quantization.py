@@ -10,6 +10,7 @@ def change_background_large(frame, background_img, model, transform, device, fla
     # Resize and prepare the frame
     h, w = frame.shape[:2]
     background_resized = cv2.resize(background_img, (w, h))
+    background_resized = cv2.cvtColor(background_resized, cv2.COLOR_BGR2RGB)
     if not flag:
         return background_resized
     rate = w/192

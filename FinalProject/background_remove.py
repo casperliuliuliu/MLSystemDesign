@@ -9,8 +9,9 @@ def change_background(frame, img, flag = True):
     rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     h, w = frame.shape[:2]
     resized_img = cv2.resize(img, (w, h))
+    resized_img = cv2.cvtColor(resized_img, cv2.COLOR_BGR2RGB)
     if flag:
-        results = selfie_segmentation.process(rgb_frame)
+        results = selfie_segmentation.process(frame)
         mask = results.segmentation_mask
         condition = mask > 0.6
         

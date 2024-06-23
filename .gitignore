@@ -1,2 +1,4 @@
 hw5/darknet/
 *.pt
+*.png
+*.zip

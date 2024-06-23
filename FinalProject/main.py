@@ -115,7 +115,7 @@ def main():
         min_detection_confidence=0.5,
         min_tracking_confidence=0.2) as hands:
 
-        cap = cv2.VideoCapture(0)  # Open the default camera
+        cap = cv2.VideoCapture(1)  # Open the default camera
 
         if not cap.isOpened():
             print("Cannot open camera")
@@ -131,6 +131,7 @@ def main():
         draw = np.zeros((h, w, 4), dtype='uint8')  # Ensure this matches the camera frame's height and width
         last_point = None
         palm_open_time = None
+        prev_frame_time = time.time()
         while True:
             ret, img = cap.read()
             if not ret:
@@ -142,7 +143,7 @@ def main():
 
             # Process the image and detect hands
             results = hands.process(img2)
-            img = change_background(img, background_img, not vanish_flag) 
+            # img = change_background(img, background_img, not vanish_flag) 
             img = change_background_large(img, background_img, model, transform, 'cpu', not vanish_flag) 
 
             # Check if any hand landmarks were detected
@@ -194,7 +195,7 @@ def main():
                 if finger_state == [False, True, True, False, False]: 
                     yeah_time += 1
                     is_yeah_displayed = True
-                    if yeah_time > 10:
+                    if yeah_time > 3:
                         save_flag = True
                 else:
                     save_flag = False
@@ -247,7 +248,11 @@ def main():
             elif is_palm_opened:
                 draw_text(img, 'PALM OPENED!', (100, 50))
                 
-
+            current_time = time.time()
+            frame_duration = current_time - prev_frame_time
+            fps = 1 / frame_duration if frame_duration > 0 else 0
+            cv2.putText(img, f'FPS: {fps:.2f}', (100, 30), cv2.FONT_HERSHEY_COMPLEX, 1, (100, 255, 0), 1, cv2.LINE_AA)
+            prev_frame_time = current_time
 
             cv2.imshow('Finger Drawing', img)
             key = cv2.waitKey(1) & 0xFF
